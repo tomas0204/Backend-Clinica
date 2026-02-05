@@ -41,6 +41,6 @@ const turnoSchema = new Schema({
   timestamps: true
 });
 
-const Tarea = mongoose.model("turno", turnoSchema)
+const Turno = mongoose.model("turno", turnoSchema)
 
-export default Tarea
+export default Turno
