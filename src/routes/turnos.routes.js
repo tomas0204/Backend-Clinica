@@ -1,8 +1,8 @@
 import {Router} from "express"
-import { crearTurno } from "../controllers/turnos.controllers.js"
+import { crearTurno, obtenerTurnos } from "../controllers/turnos.controllers.js"
 
 const router = Router()
 
-router.route("/").post(crearTurno)
+router.route("/").post(crearTurno).get(obtenerTurnos)
 
 export default router
