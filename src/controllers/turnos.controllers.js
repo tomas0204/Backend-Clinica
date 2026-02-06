@@ -2,6 +2,10 @@ import Turno from "../models/turno.js"
 
 const crearTurno = async (req, res) => {
   try {
+    const nuevoTurno = new Turno(req.body)
+
+    await nuevoTurno.save()
+
     console.log("Se creó un turno");
     res.status(201).send("Se creó un turno");
   } catch (error) {
