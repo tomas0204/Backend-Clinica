@@ -30,12 +30,26 @@ const obtenerTurno = async(req, res, _id) =>{
         res.status(200).json(turnoBuscado)
     } catch (error) {
         console.error(error);
-        res.status(500).json({mensaje: "Ocurrió un Error al obtener la tarea."})
+        res.status(500).json({mensaje: "Ocurrió un Error al obtener el turno."})
     }
+}
+
+const borrarTurno = async(req, res, _id) =>{
+  try {
+    const turno = await Turno.findByIdAndDelete(req.params.id);
+        if(!turno) {
+            return res.status(404).json({mensaje: "No se encontro el turno"})
+        }
+        return res.status(200).json({mensaje: `El turno ${turno} fue eliminado correctamente.`})
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({mensaje: "Ocurrió un Error al borrar el turno."})
+  }
 }
 
 export {
     crearTurno,
     obtenerTurnos,
-    obtenerTurno
+    obtenerTurno,
+    borrarTurno
 }
