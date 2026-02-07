@@ -24,7 +24,18 @@ const obtenerTurnos = async(req, res) =>{
     }
 }
 
+const obtenerTurno = async(req, res, _id) =>{
+    try {
+        const turnoBuscado = await Turno.findById(req.params.id)
+        res.status(200).json(turnoBuscado)
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({mensaje: "Ocurrió un Error al obtener la tarea."})
+    }
+}
+
 export {
     crearTurno,
-    obtenerTurnos
+    obtenerTurnos,
+    obtenerTurno
 }
