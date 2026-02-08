@@ -47,9 +47,32 @@ const borrarTurno = async(req, res, _id) =>{
   }
 }
 
+const editarTurno = async (req, res, _id) => {
+  try {
+    const turnoActualizado = await Turno.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!turnoActualizado) {
+      return res.status(404).json({ mensaje: "No se encontró el turno" });
+    }
+
+    res.status(200).json({
+      mensaje: "Turno actualizado correctamente",
+      turno: turnoActualizado
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Ocurrió un error al editar el turno" });
+  }
+};
+
 export {
     crearTurno,
     obtenerTurnos,
     obtenerTurno,
-    borrarTurno
+    borrarTurno,
+    editarTurno
 }
