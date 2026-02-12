@@ -25,6 +25,12 @@ const validacionTurno = [
     .matches(/^([01]\d|2[0-3]):([0-5]\d)$/)
     .withMessage("La hora debe tener formato HH:mm"),
 
+  body("motivoConsulta")
+    .notEmpty()
+    .withMessage("El motivo de consulta es obligatorio")
+    .isLength({ min: 3, max: 150 })
+    .withMessage("El motivo de consulta debe tener entre 3 y 150 caracteres"),
+
   body("estado")
     .notEmpty()
     .withMessage("El estado es obligatorio")
