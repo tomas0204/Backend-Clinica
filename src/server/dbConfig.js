@@ -8,4 +8,4 @@ try {
     console.error(error);   
 }
 
-export default mongoose
+export default mongoose;
