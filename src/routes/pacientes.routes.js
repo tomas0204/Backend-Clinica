@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { prueba } from "../controllers/pacientes.controllers.js"; 
+import { crearPaciente, prueba } from "../controllers/pacientes.controllers.js";
+
 
 const router = Router();
 
-// petición y respuesta (req, res)
-router.route("/").get(prueba);
+router.route('/test').get(prueba);
+
+router.route('/').post(crearPaciente);
 
 export default router;

@@ -1,8 +1,8 @@
 import router from "./src/routes/index.routes.js"
 import Server from "./src/server/config.js"
-const server = new Server()
+const server = new Server();
 
 //escuche al puerto 
-server.app.use(router)
+server.app.use("/api", router)
 
 server.listen()

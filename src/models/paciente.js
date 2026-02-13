@@ -1,15 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
-const { Schema, model } = mongoose;
-
-const pacienteSchema = new Schema(
+const pacienteSchema = new mongoose.Schema(
     {
         nombre_y_apellido: {
             type: String,
             required: true,
             minlength: 5,
             maxlength: 40,
-            trim: true
+            trim: true,
+            unique: true
         },
 
         celular: {
