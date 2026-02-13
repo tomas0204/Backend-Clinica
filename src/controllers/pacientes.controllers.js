@@ -29,13 +29,30 @@ export const crearPaciente = async (req, res) => {
 }
 
 
-export const listarProductos = async (req, res) => {
+export const listarPacientes = async (req, res) => {
         try {
             const pacientes = await Paciente.find();
             res.status(200).json(pacientes) 
         } catch (error) {
             console.error(error);
-            res.status(500).json({ mensaje: 'Ocurrio un error al listar los pacientes' })
+            res.status(500).json({ mensaje: "Ocurrio un error al listar los pacientes" })
         }
     }
+
+export const obtenerPaciente = async (req, res) => {
+    try {
+
+        console.log(req.params.id);
+        const pacienteBuscado = await Paciente.findById(req.params.id);
+        if(!pacienteBuscado){
+            //404 not found 
+            return res.status(404).json({mensaje:'No se encontro el paciente'})
+        }
+        res.status(200).json(pacienteBuscado)
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({mensaje: 'Ocurrio un error al listar el paciente'})
+    }
+}
 
