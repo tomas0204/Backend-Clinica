@@ -63,10 +63,34 @@ const editarTurno = async (req, res, _id) => {
   }
 };
 
+const turnosPaginados = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const [turnos, cantidadTurnos] = await Promise.all([
+            Turno.find().skip(skip).limit(limit).sort({ fecha: 1 }),
+            Turno.countDocuments()
+        ]);
+
+        res.status(200).json({
+            turnos,
+            paginaActual: page,
+            cantidadTurnos,
+            cantPaginas: Math.ceil(cantidadTurnos / limit),
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensaje: "Ocurrió un error al listar los turnos paginados" });
+    }
+};
+
 export {
     crearTurno,
     obtenerTurnos,
     obtenerTurno,
     borrarTurno,
-    editarTurno
+    editarTurno,
+    turnosPaginados
 }
