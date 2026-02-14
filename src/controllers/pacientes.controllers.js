@@ -56,3 +56,19 @@ export const obtenerPaciente = async (req, res) => {
     }
 }
 
+
+export const borrarPacientePorID = async (req, res) => {
+    try {
+        const pacienteBuscado = await Paciente.findByIdAndDelete(req.params.id);
+        if(!pacienteBuscado){
+            return res.status(404).json({mensaje: "No se encontro el paciente"})
+        }
+        return res.status(200).json({mensaje: "El paciente fue eliminado correctamente"})
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({mensaje: "Ocurrio un error al eliminar paciente"})
+
+    }
+
+}
+
