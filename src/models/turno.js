@@ -25,6 +25,13 @@ const turnoSchema = new Schema({
     required: true,
     match: /^([01]\d|2[0-3]):([0-5]\d)$/ // HH:mm 24hs
   },
+  motivoConsulta: {
+    type: String,
+    minLength: 2,
+    maxLength: 150,
+    required: true,
+    trim: true
+  },
   estado: {
     type: String,
     enum: [
