@@ -1,19 +1,30 @@
-import { Preference } from "mercadopago";
+import { Preference, Payment } from "mercadopago";
 import client from "../server/mercadopago.js";
 import Turno from "../models/turno.js";
 
 export const crearPagoTurno = async (req, res) => {
   try {
-    const { medicoId, fecha, hora, pacienteId } = req.body;
+    console.log("BODY:", req.body);
+
+    const {
+      pacienteNombre,
+      medicoNombre,
+      fecha,
+      hora,
+      motivoConsulta,
+      precio
+    } = req.body;
 
     // 1️⃣ Crear turno pendiente
     const nuevoTurno = await Turno.create({
-      medicoId,
+      pacienteNombre,
+      medicoNombre,
       fecha,
       hora,
-      pacienteId,
-      precio: 5000,
-      estado: "pendiente_pago",
+      motivoConsulta,
+      precio,
+      estado: "Pendiente",      // estado médico
+      estadoPago: "Pendiente"   // estado de pago
     });
 
     // 2️⃣ Crear preferencia
@@ -41,11 +52,14 @@ export const crearPagoTurno = async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ mensaje: "Error al crear pago del turno" });
+    console.error(error.message);
+
   }
 };
 
 export const recibirWebhook = async (req, res) => {
   const notification = req.body;
+  console.log("Webhook recibido:", req.body);
 
   try {
     if (notification.type === "payment") {
@@ -59,8 +73,8 @@ export const recibirWebhook = async (req, res) => {
 
         if (!turno) return res.sendStatus(404);
 
-        if (turno.estado === "pendiente_pago") {
-          turno.estado = "pagado";
+        if (turno.estado === "Pendiente") {
+          turno.estadoPago = "Pagado";
           turno.paymentId = payment.id;
           await turno.save();
         }

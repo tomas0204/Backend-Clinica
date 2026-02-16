@@ -42,7 +42,6 @@ const turnoSchema = new Schema({
       'Reprogramado'
     ],
     default: 'Pendiente',
-    required: true
   },
   paymentId: {
     type: String,
@@ -50,7 +49,12 @@ const turnoSchema = new Schema({
   precio: {
     type: Number,
     required: true,
-  }
+  },
+  estadoPago: {
+  type: String,
+  enum: ["Pendiente", "Pagado", "Rechazado"],
+  default: "Pendiente"
+}
 }, {
   timestamps: true
 });
