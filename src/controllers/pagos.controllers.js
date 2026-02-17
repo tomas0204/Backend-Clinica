@@ -73,7 +73,7 @@ export const recibirWebhook = async (req, res) => {
 
         if (!turno) return res.sendStatus(404);
 
-        if (turno.estado === "Pendiente") {
+        if (turno.estadoPago === "Pendiente") {
           turno.estadoPago = "Pagado";
           turno.paymentId = payment.id;
           await turno.save();
