@@ -38,7 +38,8 @@ export const crearPagoTurno = async (req, res) => {
         },
       ],
       back_urls: {
-        success: `${process.env.DB}/pago/exitoso`,
+        success: "http://localhost:5173/turnos",
+        failure: "http://localhost:5173/error404"
       },
       external_reference: nuevoTurno._id.toString(),
     };

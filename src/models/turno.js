@@ -52,7 +52,7 @@ const turnoSchema = new Schema({
   },
   estadoPago: {
   type: String,
-  enum: ["Pendiente", "Pagado", "Rechazado"],
+  enum: ["Pendiente", "Pagado", "Rechazado", "Cancelado"],
   default: "Pendiente"
 }
 }, {
