@@ -1,4 +1,4 @@
-import mongoose, {Schema} from "mongoose"
+import mongoose, { Schema } from "mongoose"
 
 const turnoSchema = new Schema({
   pacienteNombre: {
@@ -42,8 +42,19 @@ const turnoSchema = new Schema({
       'Reprogramado'
     ],
     default: 'Pendiente',
-    required: true
-  }
+  },
+  paymentId: {
+    type: String,
+  },
+  precio: {
+    type: Number,
+    required: true,
+  },
+  estadoPago: {
+  type: String,
+  enum: ["Pendiente", "Pagado", "Rechazado", "Cancelado"],
+  default: "Pendiente"
+}
 }, {
   timestamps: true
 });
