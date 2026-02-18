@@ -1,7 +1,8 @@
 import mongoose from "mongoose"
 
 try {
-    mongoose.connect(process.env.MONGODB).then(() => {
+    console.log(process.env.DB);
+    mongoose.connect(process.env.DB).then(() => {
         console.info("BD Conectada correctamente")
     })
 } catch (error){

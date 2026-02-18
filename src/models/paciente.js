@@ -77,6 +77,9 @@ pacienteSchema.pre("save", async function (next) {
 // 🔎 Método para login futuro
 //
 pacienteSchema.methods.compararPassword = async function (passwordIngresada) {
+    console.log(passwordIngresada);
+    console.log(this.contraseña);
+    
     return await bcrypt.compare(passwordIngresada, this.contraseña);
 };
 

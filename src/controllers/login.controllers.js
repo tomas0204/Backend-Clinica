@@ -17,16 +17,16 @@ export const loginPaciente = async (req, res) => {
 
     if (!paciente) {
       return res.status(400).json({
-        mensaje: "Credenciales inválidas"
+        mensaje: "Credenciales inválidas del paciente"
       });
     }
 
     // 3️⃣ Comparar password
     const passwordValida = await paciente.compararPassword(contraseña);
 
-    if (!passwordValida) {
+    if (passwordValida === true) {
       return res.status(400).json({
-        mensaje: "Credenciales inválidas"
+        mensaje: "Contraseña incorrecta del paciente"
       });
     }
 
@@ -37,7 +37,7 @@ export const loginPaciente = async (req, res) => {
         role: paciente.role
       },
       process.env.JWT_SECRET,
-      { expiresIn: "2h" }
+      { expiresIn: "5h" }
     );
 
     // 5️⃣ Respuesta
