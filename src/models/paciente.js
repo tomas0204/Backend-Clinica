@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const pacienteSchema = new mongoose.Schema(
     {
@@ -46,13 +47,38 @@ const pacienteSchema = new mongoose.Schema(
                 "La contraseña debe tener entre 6 y 12 caracteres, una mayúscula, una minúscula, un número y un carácter especial"
             ]
         },
-
-
+        role: {
+            type: String,
+            enum: ["paciente", "medico", "admin"],
+            default: "paciente"
+        },
     },
     {
         timestamps: true
     }
 );
+
+//
+// 🔐 HASH antes de guardar
+//
+pacienteSchema.pre("save", async function (next) {
+    if (!this.isModified("contraseña")) return next();
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.contraseña = await bcrypt.hash(this.contraseña, salt);
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
+
+//
+// 🔎 Método para login futuro
+//
+pacienteSchema.methods.compararPassword = async function (passwordIngresada) {
+    return await bcrypt.compare(passwordIngresada, this.contraseña);
+};
 
 const Paciente = mongoose.model("Paciente", pacienteSchema);
 

@@ -39,7 +39,6 @@ export const crearPaciente = async (req, res) => {
 };
 
 
-
 export const listarPacientes = async (req, res) => {
         try {
             const pacientes = await Paciente.find();

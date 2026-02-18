@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {Router} from "express"
 import turnosRoutes from "./turnos.routes.js"
 import pagosRoutes from "./pago.routes.js";
