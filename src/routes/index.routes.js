@@ -1,7 +1,8 @@
-import router from "./doctores.routes";
-import routerDoctores from "./doctores.routes"
+import Router from "./doctores.routes";
+import doctoresRoutes from "./doctores.routes.js"
 
-const Router = router();
-router.use('/doctores', routerDoctores);
 
-export default Router;
+const router = Router();
+router.use('/doctores', doctoresRoutes);
+
+export default router;
