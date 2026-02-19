@@ -1,7 +1,9 @@
 import { Router } from "express";
-import { prueba } from "../controllers/doctores.controllers.js";
+import { prueba, crearDoctor } from "../controllers/doctores.controllers.js";
 
 const router = Router();
-router.route('/test').get(prueba);
+router.get("/", prueba);
+router.route('/').post(crearDoctor);
+
 
 export default router; // 👈 ESTO ES CLAVE

@@ -42,12 +42,14 @@ const doctorSchema = new mongoose.Schema({
     timestamps: true
 });
 
-doctorSchema.pre("save", async function (next) {
-    if (!this.isModified("contraseña")) return next();
+doctorSchema.pre("save", async function () {
+    if (!this.isModified("contraseña")) return;
+
     const salt = await bcrypt.genSalt(10);
     this.contraseña = await bcrypt.hash(this.contraseña, salt);
-    next();
 });
+
+
 
 const Doctor = mongoose.model("Doctor", doctorSchema);
 
