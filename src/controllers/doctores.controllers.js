@@ -49,3 +49,19 @@ export const obtenerDoctor = async (req, res) => {
         res.status(500).json({mensaje: 'Ocurrio un error al listar el doctor'})
     }
 }
+
+
+export const borrarDoctorPorID = async (req, res) => {
+    try {
+        const doctorBuscado = await Doctor.findByIdAndDelete(req.params.id);
+        if(!doctorBuscado){
+            return res.status(404).json({mensaje: "No se encontro el doctor"})
+        }
+        return res.status(200).json({mensaje: "El doctor fue eliminado correctamente"})
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({mensaje: "Ocurrio un error al eliminar el doctor"})
+
+    }
+
+}
