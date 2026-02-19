@@ -9,6 +9,18 @@ export const prueba = (req, res) => {
 export const crearPaciente = async (req, res) => {
   try {
     const { contraseña, contraseña_confirmar } = req.body;
+    
+    if (req.body.role === "admin") {
+        
+        // 1️⃣ Verificamos que el usuario autenticado sea admin
+        if (!req.user || req.user.role !== "admin") {
+            return res.status(403).json({
+                msg: "No autorizado para crear administradores"
+            });
+        }
+
+        req.body.role = "admin";
+    }
 
     // ✅ Validar que las contraseñas coincidan
     if (contraseña !== contraseña_confirmar) {
@@ -19,8 +31,6 @@ export const crearPaciente = async (req, res) => {
 
     // ✅ Eliminar contraseña_confirmar antes de guardar
     delete req.body.contraseña_confirmar;
-
-    console.log(req.body);
 
     const pacienteNuevo = new Paciente(req.body);
 
@@ -37,7 +47,6 @@ export const crearPaciente = async (req, res) => {
     });
   }
 };
-
 
 export const listarPacientes = async (req, res) => {
         try {

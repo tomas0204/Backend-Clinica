@@ -24,7 +24,7 @@ export const loginPaciente = async (req, res) => {
     // 3️⃣ Comparar password
     const passwordValida = await paciente.compararPassword(contraseña);
 
-    if (passwordValida === true) {
+    if (passwordValida === false) {
       return res.status(400).json({
         mensaje: "Contraseña incorrecta del paciente"
       });

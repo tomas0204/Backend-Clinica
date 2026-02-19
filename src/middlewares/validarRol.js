@@ -1,4 +1,4 @@
-export const validarRol = (...rolesPermitidos) => {
+const validarRol = (...rolesPermitidos) => {
     return (req, res, next) => {
        
         if (!req.user){
@@ -12,5 +12,9 @@ export const validarRol = (...rolesPermitidos) => {
                 mensaje: `El rol ${req.user.role} no tiene permiso para esta acción`
             });
         }
+
+        next();
     }
 }
+
+export default validarRol;
