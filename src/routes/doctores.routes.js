@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { prueba, crearDoctor } from "../controllers/doctores.controllers.js";
+import {  crearDoctor, listarDoctores, obtenerDoctor } from "../controllers/doctores.controllers.js";
 
 const router = Router();
-router.get("/", prueba);
-router.route('/').post(crearDoctor);
+
+router.route('/').post(crearDoctor).get(listarDoctores);
+router.route('/:id').get(obtenerDoctor);
 
 
 export default router; // 👈 ESTO ES CLAVE
