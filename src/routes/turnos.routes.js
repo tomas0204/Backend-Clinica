@@ -2,6 +2,8 @@ import {Router} from "express"
 import { crearTurno, obtenerTurnos, obtenerTurno, borrarTurno, editarTurno, turnosPaginados } from "../controllers/turnos.controllers.js"
 import validacionTurno from "../middlewares/validacionTurno.js"
 import validacionIdTurno from "../middlewares/validacionTurnoId.js"
+import validarRol from "../middlewares/validarRol.js"
+import validarToken from "../middlewares/validarToken.js"
 
 const router = Router()
 

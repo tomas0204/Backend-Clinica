@@ -9,6 +9,7 @@ export const prueba = (req, res) => {
 export const crearPaciente = async (req, res) => {
   try {
     const { contraseña, contraseña_confirmar } = req.body;
+    
 
     // ✅ Validar que las contraseñas coincidan
     if (contraseña !== contraseña_confirmar) {
@@ -20,7 +21,8 @@ export const crearPaciente = async (req, res) => {
     // ✅ Eliminar contraseña_confirmar antes de guardar
     delete req.body.contraseña_confirmar;
 
-    console.log(req.body);
+    // 🔥 FORZAR ROL
+    req.body.role = "paciente";
 
     const pacienteNuevo = new Paciente(req.body);
 
@@ -37,7 +39,6 @@ export const crearPaciente = async (req, res) => {
     });
   }
 };
-
 
 export const listarPacientes = async (req, res) => {
         try {
@@ -68,19 +69,41 @@ export const obtenerPaciente = async (req, res) => {
 
 
 export const borrarPacientePorID = async (req, res) => {
-    try {
-        const pacienteBuscado = await Paciente.findByIdAndDelete(req.params.id);
-        if(!pacienteBuscado){
-            return res.status(404).json({mensaje: "No se encontro el paciente"})
-        }
-        return res.status(200).json({mensaje: "El paciente fue eliminado correctamente"})
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({mensaje: "Ocurrio un error al eliminar paciente"})
+  try {
 
+    // 1️⃣ Buscar primero
+    const pacienteBuscado = await Paciente.findById(req.params.id);
+
+    if (!pacienteBuscado) {
+      return res.status(404).json({ mensaje: "No se encontró el paciente" });
     }
 
-}
+    // 2️⃣ Si es admin, validar antes de borrar
+    if (pacienteBuscado.role === "admin") {
+
+      const cantidadAdmins = await Paciente.countDocuments({ role: "admin" });
+
+      if (cantidadAdmins <= 1) {
+        return res.status(400).json({
+          mensaje: "No se puede eliminar al último administrador"
+        });
+      }
+    }
+
+    // 3️⃣ Ahora sí eliminar
+    await Paciente.findByIdAndDelete(req.params.id);
+
+    return res.status(200).json({
+      mensaje: "Usuario eliminado correctamente"
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      mensaje: "Ocurrió un error al eliminar usuario"
+    });
+  }
+};
 
 export const editarPacientePorID = async (req, res) => {
     try {
