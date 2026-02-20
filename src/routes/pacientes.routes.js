@@ -12,7 +12,7 @@ const router = Router();
 
 router.route('/test').get(prueba);
 
-router.route('/').post(validarToken, crearPaciente).get(validarToken, validarRol("admin"), listarPacientes);
+router.route('/').post(crearPaciente).get(validarToken, validarRol("admin"), listarPacientes);
 
 router.route('/:id').get(validarToken, validarRol("admin"), obtenerPaciente).delete(validarToken, validarRol("admin"), borrarPacientePorID).put(validarToken, validarRol("paciente"),validarRol("admin"), editarPacientePorID)
 
