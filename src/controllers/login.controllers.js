@@ -43,7 +43,8 @@ export const loginPaciente = async (req, res) => {
     // 5️⃣ Respuesta
     res.status(200).json({
       mensaje: "Login exitoso",
-      token
+      token,
+      role: paciente.role
     });
 
   } catch (error) {

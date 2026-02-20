@@ -22,7 +22,7 @@ export const crearPaciente = async (req, res) => {
     delete req.body.contraseña_confirmar;
 
     // 🔥 FORZAR ROL
-    req.body.role = "admin";
+    req.body.role = "paciente";
 
     const pacienteNuevo = new Paciente(req.body);
 
