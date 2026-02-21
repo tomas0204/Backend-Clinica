@@ -5,7 +5,7 @@ try {
         console.info("BD Conectada correctamente")
     })
 } catch (error){
-    console.error(error);   
+    console.error('error');   
 }
 
 export default mongoose;
