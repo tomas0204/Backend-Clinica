@@ -63,6 +63,27 @@ const editarTurno = async (req, res, _id) => {
   }
 };
 
+const cancelarTurno = async (req, res) => {
+  try {
+    const { estado } = req.body;
+
+    const turnoCancelado = await Turno.findByIdAndUpdate(
+      req.params.id,
+      { estado: estado || "cancelado" },
+      { new: true }
+    );
+
+    if (!turnoCancelado) {
+      return res.status(404).json({ mensaje: "No se encontró el turno" });
+    }
+
+    res.status(200).json(turnoCancelado);
+
+  } catch (error) {
+    res.status(500).json({ mensaje: "Ocurrió un error al cancelar el turno" });
+  }
+};
+
 const turnosPaginados = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
@@ -92,5 +113,6 @@ export {
     obtenerTurno,
     borrarTurno,
     editarTurno,
-    turnosPaginados
+    turnosPaginados,
+    cancelarTurno
 }
