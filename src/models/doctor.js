@@ -13,13 +13,6 @@ const doctorSchema = new mongoose.Schema({
         trim: true
     },
 
-    celular: {
-        type: String,
-        required: [true, "El celular es obligatorio"],
-        match: [/^[0-9]+$/, "Solo se permiten números"],
-        minlength: [9, "Debe tener al menos 9 dígitos"]
-    },
-
     email: {
         type: String,
         required: [true, "El email es obligatorio"],
@@ -35,8 +28,8 @@ const doctorSchema = new mongoose.Schema({
 
     role: {
         type: String,
-        default: "doctor",
-        enum: ["doctor"]
+        default: "medico",
+        enum: ["medico"]
     }
 }, {
     timestamps: true
@@ -49,6 +42,16 @@ doctorSchema.pre("save", async function () {
     this.contraseña = await bcrypt.hash(this.contraseña, salt);
 });
 
+
+//
+// 🔎 Método para login futuro
+//
+doctorSchema.methods.compararPassword = async function (passwordIngresada) {
+    console.log(passwordIngresada);
+    console.log(this.contraseña);
+    
+    return await bcrypt.compare(passwordIngresada, this.contraseña);
+};
 
 
 const Doctor = mongoose.model("Doctor", doctorSchema);
