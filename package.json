@@ -5,7 +5,7 @@
   "description": "Backend para Clinica",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node index",
     "dev": "node --env-file .env --watch index"
   },
   "author": "Giovanna Ianiero",
@@ -13,7 +13,11 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "express-validator": "^7.3.1",
+    "jsonwebtoken": "^9.0.3",
+    "mercadopago": "^2.12.0",
     "mongoose": "^9.1.5",
     "morgan": "^1.10.1"
   }

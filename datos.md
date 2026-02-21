@@ -1,6 +1,6 @@
 ## Turno
-- id: number
-- fecha: string (ISO)
-- estado: pendiente | confirmado | cancelado
-- pacienteId: number
-- medicoId: number
+- pacienteNombre: String
+- medicoNombre: String
+- fecha: YYYY-MM-DD
+- hora: HH:mm
+- estado: Pendiente / Confirmado / Cancelado / Atendido / Reprogramado
