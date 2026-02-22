@@ -10,7 +10,8 @@ const doctorSchema = new mongoose.Schema({
         required: [true, "El nombre y apellido es obligatorio"],
         minlength: [5, "Debe tener al menos 5 caracteres"],
         maxlength: [40, "No debe superar los 40 caracteres"],
-        trim: true
+        trim: true,
+        unique: true
     },
 
     email: {

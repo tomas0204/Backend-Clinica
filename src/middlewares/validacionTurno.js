@@ -1,6 +1,7 @@
 import { body } from "express-validator";
 import resultadoValidacion from "./resultadoValidacion.js";
 import Turno from "../models/turno.js";
+import Horario from "../models/horario.js";
 
 const validacionTurno = [
   body("pacienteNombre")
@@ -79,6 +80,26 @@ const validacionTurno = [
 
     const inicioNuevo = new Date(`${req.body.fecha}T${req.body.hora}`);
     const finNuevo = new Date(inicioNuevo.getTime() + duracionMinutos * 60000);
+
+    const dia = new Date(fecha).getDay(); // 0 domingo, 6 sábado
+
+    const horarios = await Horario.find({
+      medicoNombre,
+      diaSemana: dia,
+    });
+
+    if (!horarios.length) {
+      throw new Error("El médico no atiende este día");
+    }
+
+    // 2️⃣ Verificar que esté dentro de algún rango laboral
+    const dentroDeHorario = horarios.some((h) => {
+      return hora >= h.horaInicio && hora < h.horaFin;
+    });
+
+    if (!dentroDeHorario) {
+      throw new Error("El turno está fuera del horario laboral");
+    }
 
     const turnos = await Turno.find({
       medicoNombre: req.body.medicoNombre,
