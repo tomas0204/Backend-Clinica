@@ -47,11 +47,6 @@ const pacienteSchema = new mongoose.Schema(
                 "La contraseña debe tener entre 6 y 12 caracteres, una mayúscula, una minúscula, un número y un carácter especial"
             ]
         },
-        role: {
-            type: String,
-            enum: ["paciente", "medico", "admin"],
-            default: "paciente"
-        },
     },
     {
         timestamps: true
@@ -69,12 +64,9 @@ pacienteSchema.pre("save", async function () {
 });
 
 //
-// 🔎 Método para login futuro
+// 🔎 Método para login
 //
 pacienteSchema.methods.compararPassword = async function (passwordIngresada) {
-    console.log(passwordIngresada);
-    console.log(this.contraseña);
-    
     return await bcrypt.compare(passwordIngresada, this.contraseña);
 };
 

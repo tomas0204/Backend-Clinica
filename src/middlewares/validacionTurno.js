@@ -30,16 +30,16 @@ const validacionTurno = [
 
       return true;
     })
-    // .custom((fecha) => {
-    //   const fechaTurno = new Date(fecha);
-    //   const dia = fechaTurno.getDay(); // 0 domingo, 6 sábado
+    .custom((fecha) => {
+      const fechaTurno = new Date(fecha);
+      const dia = fechaTurno.getDay(); // 0 domingo, 6 sábado
 
-    //   if (dia === 5 || dia === 6) {
-    //     throw new Error("La clínica no atiende fines de semana");
-    //   }
+      if (dia === 5 || dia === 6) {
+        throw new Error("La clínica no atiende fines de semana");
+      }
 
-    //   return true;
-    // })
+      return true;
+    })
     .custom((fecha) => {
       const fechaTurno = new Date(fecha);
       const hoy = new Date();
