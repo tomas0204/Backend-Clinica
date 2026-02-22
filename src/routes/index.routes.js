@@ -11,4 +11,5 @@ router.use("/pagos", pagosRoutes);
 router.use("/pacientes", pacientesRoutes);
 
 
+
 export default router
