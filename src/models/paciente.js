@@ -61,16 +61,10 @@ const pacienteSchema = new mongoose.Schema(
 //
 // 🔐 HASH antes de guardar
 //
-pacienteSchema.pre("save", async function (next) {
-    if (!this.isModified("contraseña")) return next();
+pacienteSchema.pre("save", async function () {
+    if (!this.isModified("contraseña")) return;
 
-    try {
-        const salt = await bcrypt.genSalt(10);
-        this.contraseña = await bcrypt.hash(this.contraseña, salt);
-        next();
-    } catch (error) {
-        next(error);
-    }
+    this.contraseña = await bcrypt.hash(this.contraseña, 10);
 });
 
 //
