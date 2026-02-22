@@ -1,99 +1,112 @@
-import Paciente from "../models/paciente.js";
+import Paciente from "../models/Paciente.js"
 
 
 export const prueba = (req, res) => {
-    console.log('desde el controlador de prueba');
-    res.send('Prueba desde el controlador');
-}
-
-export const crearPaciente = async (req, res) => {
-  try {
-    const { contraseña, contraseña_confirmar } = req.body;
-
-    // ✅ Validar que las contraseñas coincidan
-    if (contraseña !== contraseña_confirmar) {
-      return res.status(400).json({
-        mensaje: "Las contraseñas no coinciden"
-      });
-    }
-
-    // ✅ Eliminar contraseña_confirmar antes de guardar
-    delete req.body.contraseña_confirmar;
-
-    console.log(req.body);
-
-    const pacienteNuevo = new Paciente(req.body);
-
-    await pacienteNuevo.save();
-
-    res.status(201).json({
-      mensaje: "El paciente fue creado exitosamente"
-    });
-
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      mensaje: "Ocurrió un error al crear paciente"
-    });
-  }
+    console.log("desde el controlador de prueba");
+    res.send("Prueba desde el controlador");
 };
-
-
-export const listarPacientes = async (req, res) => {
-        try {
-            const pacientes = await Paciente.find();
-            res.status(200).json(pacientes) 
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ mensaje: "Ocurrio un error al listar los pacientes" })
-        }
-    }
-
-export const obtenerPaciente = async (req, res) => {
+export const crearPaciente = async (req, res) => {
     try {
-
-        console.log(req.params.id);
-        const pacienteBuscado = await Paciente.findById(req.params.id);
-        if(!pacienteBuscado){
-            //404 not found 
-            return res.status(404).json({mensaje:'No se encontro el paciente'})
+        const { contraseña, confirmarContraseña } = req.body;
+        if (!contraseña || !confirmarContraseña) {
+            return res.status(400).json({
+                mensaje: "Debe completar ambos campos de contraseña",
+            });
         }
-        res.status(200).json(pacienteBuscado)
-
+        if (contraseña !== confirmarContraseña) {
+            return res.status(400).json({
+                mensaje: "Las contraseñas no coinciden",
+            });
+        }
+        delete req.body.confirmarContraseña;
+        const pacienteNuevo = new Paciente(req.body);
+        await pacienteNuevo.save();
+        res.status(201).json({
+            mensaje: "El paciente fue creado exitosamente",
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({mensaje: 'Ocurrio un error al listar el paciente'})
+        if (error.name === "ValidationError") {
+            return res.status(400).json({
+                mensaje: error.message,
+            });
+        }
+        res.status(500).json({
+            mensaje: "Ocurrió un error al crear paciente",
+        });
     }
-}
+};
+export const listarPacientes = async (req, res) => {
+    try {
+        const pacientes = await Paciente.find();
+        res.status(200).json(pacientes);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            mensaje: "Ocurrió un error al listar los pacientes",
+        });
+    }
+};
+export const obtenerPaciente = async (req, res) => {
+    try {
+        const pacienteBuscado = await Paciente.findById(req.params.id);
 
-
+        if (!pacienteBuscado) {
+            return res.status(404).json({
+                mensaje: "No se encontró el paciente",
+            });
+        }
+        res.status(200).json(pacienteBuscado);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            mensaje: "Ocurrió un error al obtener el paciente",
+        });
+    }
+};
 export const borrarPacientePorID = async (req, res) => {
     try {
         const pacienteBuscado = await Paciente.findByIdAndDelete(req.params.id);
-        if(!pacienteBuscado){
-            return res.status(404).json({mensaje: "No se encontro el paciente"})
+        if (!pacienteBuscado) {
+            return res.status(404).json({
+                mensaje: "No se encontró el paciente",
+            });
         }
-        return res.status(200).json({mensaje: "El paciente fue eliminado correctamente"})
+        res.status(200).json({
+            mensaje: "El paciente fue eliminado correctamente",
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({mensaje: "Ocurrio un error al eliminar paciente"})
-
+        res.status(500).json({
+            mensaje: "Ocurrió un error al eliminar paciente",
+        });
     }
-
-}
-
+};
 export const editarPacientePorID = async (req, res) => {
     try {
-        const pacienteBuscado = await Paciente.findByIdAndUpdate(req.params.id, req.body);
-        if(!pacienteBuscado){
-            return res.status(404).json({mensaje: "No se encontro el paciente"})
+        const pacienteActualizado = await Paciente.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+        if (!pacienteActualizado) {
+            return res.status(404).json({
+                mensaje: "No se encontró el paciente",
+            });
         }
-        return res.status(200).json({mensaje: "El paciente fue actualizado correctamente"})
-
+        res.status(200).json({
+            mensaje: "El paciente fue actualizado correctamente",
+            paciente: pacienteActualizado,
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({mensaje: "Ocurrio un error al actualizar paciente"})
-
+        if (error.name === "ValidationError") {
+            return res.status(400).json({
+                mensaje: error.message,
+            });
+        }
+        res.status(500).json({
+            mensaje: "Ocurrió un error al actualizar paciente",
+        });
     }
-}
-
+};
