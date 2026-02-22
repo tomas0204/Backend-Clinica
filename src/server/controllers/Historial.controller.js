@@ -6,7 +6,11 @@ export const crearHistorial = async (req, res) => {
     await nuevoHistorial.save();
     res.status(201).json(nuevoHistorial);
   } catch (error) {
-    res.status(500).json({ message: "Error al crear historial", error });
+    console.log("ERROR REAL:", error);
+    res.status(500).json({
+      message: "Error al crear historial",
+      error: error.message
+    });
   }
 };
 
@@ -16,6 +20,10 @@ export const obtenerHistorialPorPaciente = async (req, res) => {
     const historial = await Historial.find({ pacienteId });
     res.json(historial);
   } catch (error) {
-    res.status(500).json({ message: "Error al obtener historial", error });
+    console.log("ERROR REAL:", error);
+    res.status(500).json({
+      message: "Error al obtener historial",
+      error: error.message
+    });
   }
 };

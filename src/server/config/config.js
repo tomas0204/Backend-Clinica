@@ -1,37 +1,37 @@
-import express from "express"
-import cors from "cors"
-import morgan from "morgan"
-import { dirname } from "path"
-import { fileURLToPath } from "url"
-import "./dbConfig.js"
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 import historialRoutes from "../routes/historial.routes.js";
 
 export default class Server {
+  constructor() {
+    this.app = express();
+    this.port = process.env.PORT || 3001;
 
-    constructor() {
-        this.app = express()
-        this.port = process.env.PORT || 3001
+    this.middlewares();
+    this.routes();
+  }
 
-        this.middlewares()
-        this.routes()
-    }
+  middlewares() {
+    this.app.use(cors());
+    this.app.use(express.json());
+    this.app.use(morgan("dev"));
 
-    middlewares() {
-        this.app.use(cors())
-        this.app.use(express.json())
-        this.app.use(morgan("dev"))
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+    this.app.use(express.static(join(__dirname, "../../public")));
+  }
 
-        const __dirname = dirname(fileURLToPath(import.meta.url))
-        this.app.use(express.static(__dirname + "/../../public"))
-    }
+  routes() {
+    this.app.use("/api/historial", historialRoutes);
+  }
 
-    routes() {
-        this.app.use("/api/historial", historialRoutes);
-    }
-
-    listen() {
-        this.app.listen(this.port, () => {
-            console.info(`El servidor se está ejecutando en: ${this.port}`)
-        })
-    }
+  listen() {
+    this.app.listen(this.port, () => {
+      console.log(
+        `🚀 Servidor ejecutándose en: http://localhost:${this.port}`
+      );
+    });
+  }
 }

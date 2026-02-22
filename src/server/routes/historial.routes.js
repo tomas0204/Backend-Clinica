@@ -1,5 +1,6 @@
 import express from "express";
-import { crearHistorial, obtenerHistorialPorPaciente } from "../controllers/historial.controller.js";
+import { crearHistorial, obtenerHistorialPorPaciente } from "../controllers/Historial.controller.js";
+
 
 
 const router = express.Router();

@@ -1,29 +1,17 @@
-import express from "express";
-import historialRoutes from "./src/server/routes/historial.routes.js";
+import dotenv from "dotenv";
+import connectDB from "./src/server/config/dbConfig.js";
+import Server from "./src/server/config/config.js";
 
+dotenv.config();
 
-class Server {
-  constructor() {
-    this.app = express();
-    this.port = process.env.PORT || 3000;
-
-    this.middlewares();
-    this.routes();
+const start = async () => {
+  try {
+    await connectDB();
+    const server = new Server();
+    server.listen();
+  } catch (error) {
+    console.error("Error al iniciar:", error);
   }
+};
 
-  middlewares() {
-    this.app.use(express.json());
-  }
-
-  routes() {
-    this.app.use("/historial", historialRoutes);
-  }
-
-  listen() {
-    this.app.listen(this.port, () => {
-      console.log(`Servidor corriendo en puerto ${this.port}`);
-    });
-  }
-}
-
-const server = new Server(); server.listen();
+start();
