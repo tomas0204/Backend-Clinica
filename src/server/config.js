@@ -16,14 +16,21 @@ export default class Server {
     }
 
     middlewares() {
-        this.app.use(cors());
+        const __dirname = dirname(fileURLToPath(import.meta.url));
+
+        this.app.use(cors({
+            origin: 'https://clinica-eight-beryl.vercel.app', 
+            methods: ['GET','POST','PUT','DELETE', 'PATCH'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+            credentials: true
+        }));
+
+        this.app.options('*', cors());
+
         this.app.use(express.json());
         this.app.use(morgan("dev"));
-
-        const __dirname = dirname(fileURLToPath(import.meta.url));
         this.app.use(express.static(__dirname + "/../../public"));
     }
-
     routes() {
         this.app.use("/api/historial", historialRoutes);
     }
