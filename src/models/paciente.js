@@ -47,6 +47,12 @@ const pacienteSchema = new mongoose.Schema(
                 "La contraseña debe tener entre 6 y 12 caracteres, una mayúscula, una minúscula, un número y un carácter especial"
             ]
         },
+
+        role: {
+        type: String,
+        default: "paciente",
+        enum: ["paciente"]
+        }
     },
     {
         timestamps: true
