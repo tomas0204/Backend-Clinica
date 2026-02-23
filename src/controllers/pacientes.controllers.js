@@ -9,7 +9,6 @@ export const crearPaciente = async (req, res) => {
     try {
         const { contraseña, confirmarContraseña, contraseña_confirmar } = req.body;
 
-        // 🔎 Compatibilidad con ambos nombres de campo
         const passwordConfirm = confirmarContraseña || contraseña_confirmar;
 
         if (!contraseña || !passwordConfirm) {
@@ -24,11 +23,9 @@ export const crearPaciente = async (req, res) => {
             });
         }
 
-        // 🧹 Eliminar campos auxiliares
         delete req.body.confirmarContraseña;
         delete req.body.contraseña_confirmar;
 
-        // 🔥 Forzar rol paciente
         req.body.role = "paciente";
 
         const pacienteNuevo = new Paciente(req.body);
@@ -95,7 +92,6 @@ export const borrarPacientePorID = async (req, res) => {
             });
         }
 
-        // 🔐 Protección: no borrar último admin
         if (pacienteBuscado.role === "admin") {
 
             const cantidadAdmins = await Paciente.countDocuments({ role: "admin" });

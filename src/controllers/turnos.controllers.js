@@ -107,7 +107,6 @@ const turnosPaginados = async (req, res) => {
   }
 };
 
-
 export {
   crearTurno,
   obtenerTurnos,

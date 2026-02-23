@@ -17,12 +17,10 @@ const router = Router();
 
 router.route('/test').get(prueba);
 
-// Crear y listar
 router.route('/')
     .post(validacionPaciente, crearPaciente)
     .get(listarPacientes);
 
-// Operaciones por ID
 router.route('/:id')
     .get(validarToken, validarRol("admin"), validacionIdPaciente, obtenerPaciente)
     .delete(validarToken, validarRol("admin"), validacionIdPaciente, borrarPacientePorID)

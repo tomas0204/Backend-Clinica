@@ -15,7 +15,6 @@ export const crearPagoTurno = async (req, res) => {
       precio
     } = req.body;
 
-    // 1️⃣ Crear turno pendiente
     const nuevoTurno = await Turno.create({
       pacienteNombre,
       medicoNombre,
@@ -23,11 +22,10 @@ export const crearPagoTurno = async (req, res) => {
       hora,
       motivoConsulta,
       precio,
-      estado: "Pendiente",      // estado médico
-      estadoPago: "Pendiente"   // estado de pago
+      estado: "Pendiente",     
+      estadoPago: "Pendiente"   
     });
 
-    // 2️⃣ Crear preferencia
     const preference = {
       items: [
         {

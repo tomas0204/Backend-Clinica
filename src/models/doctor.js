@@ -43,10 +43,6 @@ doctorSchema.pre("save", async function () {
     this.contraseña = await bcrypt.hash(this.contraseña, salt);
 });
 
-
-//
-// 🔎 Método para login futuro
-//
 doctorSchema.methods.compararPassword = async function (passwordIngresada) {
     console.log(passwordIngresada);
     console.log(this.contraseña);

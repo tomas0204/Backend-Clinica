@@ -59,9 +59,7 @@ const pacienteSchema = new mongoose.Schema(
     }
 );
 
-//
-// 🔐 HASH antes de guardar
-//
+
 pacienteSchema.pre("save", async function () {
     if (!this.isModified("contraseña")) return;
 
@@ -69,9 +67,7 @@ pacienteSchema.pre("save", async function () {
     this.contraseña = await bcrypt.hash(this.contraseña, salt);
 });
 
-//
-// 🔎 Método para login
-//
+
 pacienteSchema.methods.compararPassword = async function (passwordIngresada) {
     return await bcrypt.compare(passwordIngresada, this.contraseña);
 };

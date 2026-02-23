@@ -32,7 +32,7 @@ const validacionTurno = [
     })
     .custom((fecha) => {
       const fechaTurno = new Date(fecha);
-      const dia = fechaTurno.getDay(); // 0 domingo, 6 sábado
+      const dia = fechaTurno.getDay(); 
 
       if (dia === 5 || dia === 6) {
         throw new Error("La clínica no atiende fines de semana");
@@ -72,7 +72,6 @@ const validacionTurno = [
     .isIn(["Pendiente", "Confirmado", "Cancelado", "Atendido", "Reprogramado"])
     .withMessage("Estado inválido"),
 
-  // ejemplo de validación contra DB (opcional)
   body(["fecha", "hora", "medicoNombre"]).custom(async (_, { req }) => {
 
     const duracionMinutos = 30;
@@ -114,13 +113,10 @@ const validacionTurno = [
   body(["fecha", "hora"]).custom((_, { req }) => {
     const { fecha, hora } = req.body;
 
-    // Fecha y hora del turno
     const fechaHoraTurno = new Date(`${fecha}T${hora}:00`);
 
-    // Fecha y hora actual del servidor
     const ahora = new Date();
 
-    // Si el turno es hoy y ya pasó
     if (fechaHoraTurno <= ahora) {
       throw new Error("No se puede reservar un horario que ya pasó");
     }

@@ -3,7 +3,6 @@ import { login } from "../controllers/login.controllers.js";
 
 const router = express.Router();
 
-// Login de paciente
 router.post("/login", login);
 
 export default router;
