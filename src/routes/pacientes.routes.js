@@ -9,7 +9,7 @@ import {
 } from "../controllers/pacientes.controllers.js";
 
 import validacionPaciente from "../middlewares/validacionPaciente.js";
-import validacionIdPaciente from "../middlewares/validacionidPaciente.js";
+import validacionIdPaciente from "../middlewares/validacionIdPaciente.js";
 import validarToken from "../middlewares/validacionAuth.js";  
 import validarRol from "../middlewares/validarRol.js";
 
