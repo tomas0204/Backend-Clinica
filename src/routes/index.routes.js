@@ -12,5 +12,6 @@ router.use("/pagos", pagosRoutes);
 router.use("/pacientes", pacientesRoutes);
 router.use("/auth", loginRoutes);
 router.use("/admin", adminRoutes);
+router.use("/guardia", ) //Completar despues
 
 export default router
