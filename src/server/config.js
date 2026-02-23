@@ -25,8 +25,6 @@ export default class Server {
             credentials: true
         }));
 
-        this.app.options('*', cors());
-
         this.app.use(express.json());
         this.app.use(morgan("dev"));
         this.app.use(express.static(__dirname + "/../../public"));
