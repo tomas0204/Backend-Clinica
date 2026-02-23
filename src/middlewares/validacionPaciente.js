@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 import resultadoValidacion from "./resultadoValidacion.js";
-import Paciente from "../models/Paciente.js";
+import Paciente from "../models/paciente.js";
 
 const validacionPaciente = [
   body("nombre_y_apellido")

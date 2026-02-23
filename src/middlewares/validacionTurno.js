@@ -111,6 +111,23 @@ const validacionTurno = [
     return true;
   }),
 
+  body(["fecha", "hora"]).custom((_, { req }) => {
+    const { fecha, hora } = req.body;
+
+    // Fecha y hora del turno
+    const fechaHoraTurno = new Date(`${fecha}T${hora}:00`);
+
+    // Fecha y hora actual del servidor
+    const ahora = new Date();
+
+    // Si el turno es hoy y ya pasó
+    if (fechaHoraTurno <= ahora) {
+      throw new Error("No se puede reservar un horario que ya pasó");
+    }
+
+    return true;
+  }),
+
   (req, res, next) => resultadoValidacion(req, res, next),
 ];
 

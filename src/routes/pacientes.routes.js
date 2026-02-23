@@ -19,8 +19,8 @@ router.route('/test').get(prueba);
 
 // Crear y listar
 router.route('/')
-    .post(validarToken, validarRol("admin"), validacionPaciente, crearPaciente)
-    .get(validarToken, validarRol("admin"), listarPacientes);
+    .post(validacionPaciente, crearPaciente)
+    .get(listarPacientes);
 
 // Operaciones por ID
 router.route('/:id')

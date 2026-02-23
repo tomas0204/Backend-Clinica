@@ -1,4 +1,4 @@
-import Paciente from "../models/Paciente.js"
+import Paciente from "../models/paciente.js"
 
 export const prueba = (req, res) => {
     console.log("desde el controlador de prueba");
