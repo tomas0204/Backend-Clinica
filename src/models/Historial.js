@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
-
 const historialSchema = new mongoose.Schema({
   pacienteId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Paciente",
+    ref: "Paciente",   // referencia al modelo Paciente
     required: true
   },
   fecha: {
