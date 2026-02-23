@@ -3,7 +3,9 @@ import cors from "cors";
 import morgan from "morgan";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import historialRoutes from "../routes/historial.routes.js";
+import apiRoutes from "../routes/index.routes.js";
+
+
 
 export default class Server {
   constructor() {
@@ -24,7 +26,7 @@ export default class Server {
   }
 
   routes() {
-    this.app.use("/api/historial", historialRoutes);
+    this.app.use("/api", apiRoutes);
   }
 
   listen() {
