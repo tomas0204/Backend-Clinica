@@ -5,12 +5,10 @@ import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import apiRoutes from "../routes/index.routes.js";
 
-
-
 export default class Server {
   constructor() {
     this.app = express();
-    this.port = process.env.PORT || 3001;
+    this.port = Number(process.env.PORT) || 3001;
 
     this.middlewares();
     this.routes();
@@ -30,10 +28,25 @@ export default class Server {
   }
 
   listen() {
-    this.app.listen(this.port, () => {
-      console.log(
-        `🚀 Servidor ejecutándose en: http://localhost:${this.port}`
-      );
-    });
+    const startListening = (portToUse) => {
+      const server = this.app.listen(portToUse, () => {
+        console.log(`Servidor ejecutándose en: http://localhost:${portToUse}`);
+      });
+
+      server.on("error", (error) => {
+        if (error.code === "EADDRINUSE") {
+          const nextPort = Number(portToUse) + 1;
+          console.warn(
+            `Puerto ${portToUse} en uso. Reintentando en puerto ${nextPort}...`
+          );
+          startListening(nextPort);
+          return;
+        }
+
+        console.error("Error al iniciar el servidor:", error);
+      });
+    };
+
+    startListening(this.port);
   }
 }
