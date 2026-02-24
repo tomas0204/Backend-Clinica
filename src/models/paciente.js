@@ -51,7 +51,7 @@ const pacienteSchema = new mongoose.Schema(
         role: {
         type: String,
         default: "paciente",
-        enum: ["paciente"]
+        enum: ["paciente", "admin"]
         }
     },
     {

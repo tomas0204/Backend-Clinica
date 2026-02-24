@@ -63,14 +63,24 @@ export const borrarDoctorPorID = async (req, res) => {
 
 export const editarDoctorPorID = async (req, res) => {
     try {
-        const doctorBuscado = await Doctor.findByIdAndUpdate(req.params.id, req.body);
+        const doctorBuscado = await Doctor.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
         if(!doctorBuscado){
             return res.status(404).json({mensaje: "No se encontro el doctor"})
         }
-        return res.status(200).json({mensaje: "El doctor fue actualizado correctamente"})
+        return res.status(200).json({
+            mensaje: "El doctor fue actualizado correctamente",
+            doctor: doctorBuscado
+        })
 
     } catch (error) {
         console.error(error);
+        if (error.name === "ValidationError") {
+            return res.status(400).json({ mensaje: error.message });
+        }
         res.status(500).json({mensaje: "Ocurrio un error al actualizar el doctor"})
 
     }

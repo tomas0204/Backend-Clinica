@@ -1,5 +1,5 @@
 import { Preference, Payment } from "mercadopago";
-import client from "../server/mercadopago.js";
+import client from "../config/mercadopago.js";
 import Turno from "../models/turno.js";
 
 export const crearPagoTurno = async (req, res) => {
@@ -15,6 +15,7 @@ export const crearPagoTurno = async (req, res) => {
       precio
     } = req.body;
 
+    // 1️⃣ Crear turno pendiente
     const nuevoTurno = await Turno.create({
       pacienteNombre,
       medicoNombre,
@@ -22,10 +23,11 @@ export const crearPagoTurno = async (req, res) => {
       hora,
       motivoConsulta,
       precio,
-      estado: "Pendiente",     
-      estadoPago: "Pendiente"   
+      estado: "Pendiente",      // estado médico
+      estadoPago: "Pendiente"   // estado de pago
     });
 
+    // 2️⃣ Crear preferencia
     const preference = {
       items: [
         {
