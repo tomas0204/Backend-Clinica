@@ -7,13 +7,15 @@ import loginRoutes from "./login.routes.js";
 import adminRoutes from "./admin.routes.js";
 import doctoresRoutes from "./doctores.routes.js";
 
+
+
 const router = Router();
 
 router.use("/turnos", turnosRoutes);
 router.use("/pagos", pagosRoutes);
 router.use("/pacientes", pacientesRoutes);
 router.use("/historial", historialRoutes);
-router.use("/", loginRoutes);
+router.use("/auth", loginRoutes);
 router.use("/admin", adminRoutes);
 router.use("/doctores", doctoresRoutes);
 
