@@ -1,20 +1,20 @@
 import mongoose from "mongoose";
-import Schema from mongoose
+import {Schema} from "mongoose"
 
 const guardiaSchema = new Schema({
-    nombre: {
+    nombreGuardia: {
         type: String,
         minLength: 5,
         maxLength: 30,
         required: true,
         trim: true
     },
-    entrada: {
-        type: Number,
+    entradaGuardia: {
+        type: String,
         required: true
     },
-    salida: {
-        type: Number,
+    salidaGuardia: {
+        type: String,
         required: true
     }   
 },
