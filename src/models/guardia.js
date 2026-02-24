@@ -11,11 +11,13 @@ const guardiaSchema = new Schema({
     },
     entradaGuardia: {
         type: String,
-        required: true
+        required: true,
+        match: /^([01]\d|2[0-3]):([0-5]\d)$/
     },
     salidaGuardia: {
         type: String,
-        required: true
+        required: true,
+        match: /^([01]\d|2[0-3]):([0-5]\d)$/
     }   
 },
 {
