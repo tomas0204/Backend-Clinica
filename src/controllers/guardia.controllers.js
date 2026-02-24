@@ -63,3 +63,19 @@ export const eliminarGuardiaPorID = async (req, res) =>{
         res.status(500).json({mensaje: "Ocurrio un error al eliminar la guardia"})
     }
 }
+
+export const editarGuardiaPorID = async (req, res) =>{
+    try {
+        const guardiaParaEditar = await Guardia.findByIdAndUpdate(req.params.id, req.body)
+
+        if (!guardiaParaEditar) {
+            return res.status(404).json({mensaje: "No se encontro la guardia para editar"})
+        }
+        res.status(200).json(guardiaParaEditar)
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({mensaje: "Ocurrio un error al eliminar la guardia "})
+        
+    }
+}
