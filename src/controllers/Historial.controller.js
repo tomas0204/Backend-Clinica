@@ -3,12 +3,19 @@ import Historial from "../models/Historial.js";
 
 export const crearHistorial = async (req, res) => {
   try {
+    const { pacienteId } = req.body;
+
+    if (!pacienteId || !mongoose.Types.ObjectId.isValid(pacienteId)) {
+      return res.status(400).json({ message: "pacienteId inválido" });
+    }
+
     const nuevoHistorial = new Historial(req.body);
     await nuevoHistorial.save();
     res.status(201).json(nuevoHistorial);
   } catch (error) {
-    console.log("ERROR REAL:", error);
-    res.status(500).json({
+    const statusCode =
+      error.name === "ValidationError" || error.name === "CastError" ? 400 : 500;
+    res.status(statusCode).json({
       message: "Error al crear historial",
       error: error.message
     });
@@ -18,10 +25,14 @@ export const crearHistorial = async (req, res) => {
 export const obtenerHistorialPorPaciente = async (req, res) => {
   try {
     const { pacienteId } = req.params;
-    const historial = await Historial.find({ pacienteId });
+
+    if (!mongoose.Types.ObjectId.isValid(pacienteId)) {
+      return res.status(400).json({ message: "pacienteId inválido" });
+    }
+
+    const historial = await Historial.find({ pacienteId }).sort({ fecha: -1 });
     res.json(historial);
   } catch (error) {
-    console.log("ERROR REAL:", error);
     res.status(500).json({
       message: "Error al obtener historial",
       error: error.message
@@ -77,7 +88,9 @@ export const actualizarHistorial = async (req, res) => {
     res.json(historialActualizado);
 
   } catch (error) {
-    res.status(500).json({
+    const statusCode =
+      error.name === "ValidationError" || error.name === "CastError" ? 400 : 500;
+    res.status(statusCode).json({
       message: "Error al actualizar historial",
       error: error.message
     });
