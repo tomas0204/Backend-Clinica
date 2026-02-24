@@ -46,3 +46,20 @@ export const obtenerGuardiaPorID = async (req, res) =>{
         res.status(500).json({mensaje: "Ocurrio un error, no se pudo obtener la guardia buscada"})
     }
 }
+
+export const eliminarGuardiaPorID = async (req, res) =>{
+    try {
+        console.log(req.params);
+        
+        const guardiaParaEliminar = await Guardia.findByIdAndDelete(req.params.id)
+
+        if (!guardiaParaEliminar) {
+            return res.status(404).json({mensaje: "No se encontro la guardia para eliminar"})
+        }
+        res.status(200).json(guardiaParaEliminar)
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({mensaje: "Ocurrio un error al eliminar la guardia"})
+    }
+}
