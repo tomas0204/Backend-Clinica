@@ -36,8 +36,8 @@ export const crearPagoTurno = async (req, res) => {
         },
       ],
       back_urls: {
-        success: "http://localhost:5173/turnos",
-        failure: "http://localhost:5173/error404"
+        success: "https://clinica-eight-beryl.vercel.app/turnos",
+        failure: "https://clinica-eight-beryl.vercel.app/*"
       },
       external_reference: nuevoTurno._id.toString(),
     };
@@ -57,16 +57,15 @@ export const crearPagoTurno = async (req, res) => {
 };
 
 export const recibirWebhook = async (req, res) => {
-  const notification = req.body;
-  console.log("Webhook recibido:", req.body);
-
   try {
-    if (notification.type === "payment") {
+    const type = req.body.type || req.query.type;
+    const paymentId = req.body.data?.id || req.query["data.id"];
+
+    if (type === "payment" && paymentId) {
       const paymentClient = new Payment(client);
-      const payment = await paymentClient.get({ id: notification.data.id });
+      const payment = await paymentClient.get({ id: paymentId });
 
       if (payment.status === "approved") {
-
         const turnoId = payment.external_reference;
         const turno = await Turno.findById(turnoId);
 
@@ -83,6 +82,7 @@ export const recibirWebhook = async (req, res) => {
     res.sendStatus(200);
 
   } catch (error) {
-    res.status(500).json({ mensaje: "Error webhook" });
+    console.error(error);
+    res.sendStatus(500);
   }
 };
