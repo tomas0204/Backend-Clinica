@@ -13,6 +13,7 @@ router.use("/turnos", turnosRoutes);
 router.use("/pagos", pagosRoutes);
 router.use("/pacientes", pacientesRoutes);
 router.use("/historial", historialRoutes);
+router.use("/auth", loginRoutes);
 router.use("/", loginRoutes);
 router.use("/admin", adminRoutes);
 router.use("/doctores", doctoresRoutes);
