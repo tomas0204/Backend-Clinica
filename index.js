@@ -1,9 +1,18 @@
-import router from "./src/routes/index.routes.js"
-import Server from "./src/server/config.js"
+import dotenv from "dotenv";
+import connectDB from "./src/config/dbConfig.js";
+import Server from "./src/config/config.js";
 
-const server = new Server()
 
-//escuche al puerto 
-server.app.use("/api", router)
+dotenv.config();
 
-server.listen()
+const start = async () => {
+  try {
+    await connectDB();
+    const server = new Server();
+    server.listen();
+  } catch (error) {
+    console.error("Error al iniciar:", error);
+  }
+};
+
+start();

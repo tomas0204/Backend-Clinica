@@ -1,50 +1,50 @@
 import jwt from "jsonwebtoken";
 import Paciente from "../models/paciente.js";
+import Doctor from "../models/doctor.js";
 
-export const loginPaciente = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, contraseña } = req.body;
 
-    // 1️⃣ Verificar que venga todo
     if (!email || !contraseña) {
       return res.status(400).json({
         mensaje: "Email y contraseña son obligatorios"
       });
     }
 
-    // 2️⃣ Buscar paciente
     const paciente = await Paciente.findOne({ email });
+    const medico = await Doctor.findOne({ email });
 
-    if (!paciente) {
+    if (!paciente && !medico) {
       return res.status(400).json({
-        mensaje: "Credenciales inválidas del paciente"
+        mensaje: "Credenciales inválidas"
       });
     }
 
-    // 3️⃣ Comparar password
-    const passwordValida = await paciente.compararPassword(contraseña);
+    const usuario = paciente || medico;
 
-    if (passwordValida === false) {
+    const passwordValida = await usuario.compararPassword(contraseña);
+
+    if (!passwordValida) {
       return res.status(400).json({
-        mensaje: "Contraseña incorrecta del paciente"
+        mensaje: "Contraseña incorrecta"
       });
     }
 
-    // 4️⃣ Generar JWT
     const token = jwt.sign(
       {
-        id: paciente._id,
-        role: paciente.role
+        id: usuario._id,
+        role: usuario.role,
+        nombre_y_apellido: usuario.nombre_y_apellido
       },
       process.env.JWT_SECRET,
       { expiresIn: "5h" }
     );
 
-    // 5️⃣ Respuesta
     res.status(200).json({
       mensaje: "Login exitoso",
       token,
-      role: paciente.role
+      role: usuario.role
     });
 
   } catch (error) {

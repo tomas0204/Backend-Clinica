@@ -1,7 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
 const pedidoSchema = new Schema({
-  // Array para almacenar múltiples productos en un solo pedido
   productos: [{
     producto: {
       type: Schema.Types.ObjectId,

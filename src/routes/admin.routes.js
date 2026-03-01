@@ -5,7 +5,6 @@ import validarRol from "../middlewares/validarRol.js";
 
 const router = express.Router();
 
-// Crear usuario admin
 router.post("/", validarToken, validarRol("admin"), crearUsuarioAdmin);
 
 export default router;

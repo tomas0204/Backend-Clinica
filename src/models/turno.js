@@ -18,12 +18,12 @@ const turnoSchema = new Schema({
   fecha: {
     type: String,
     required: true,
-    match: /^\d{4}-\d{2}-\d{2}$/ // YYYY-MM-DD
+    match: /^\d{4}-\d{2}-\d{2}$/ 
   },
   hora: {
     type: String,
     required: true,
-    match: /^([01]\d|2[0-3]):([0-5]\d)$/ // HH:mm 24hs
+    match: /^([01]\d|2[0-3]):([0-5]\d)$/ 
   },
   motivoConsulta: {
     type: String,

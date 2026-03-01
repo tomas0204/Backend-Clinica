@@ -1,5 +1,5 @@
 import { Preference, Payment } from "mercadopago";
-import client from "../server/mercadopago.js";
+import client from "../config/mercadopago.js";
 import Turno from "../models/turno.js";
 
 export const crearPagoTurno = async (req, res) => {

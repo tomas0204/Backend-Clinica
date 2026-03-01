@@ -1,10 +1,15 @@
 import { Router } from "express";
-import {  borrarPacientePorID, 
+import {  
+    borrarPacientePorID, 
     crearPaciente, 
     editarPacientePorID, 
     listarPacientes, 
     obtenerPaciente, 
-    prueba } from "../controllers/pacientes.controllers.js";
+    prueba 
+} from "../controllers/pacientes.controllers.js";
+
+import validacionPaciente from "../middlewares/validacionPaciente.js";
+import validacionIdPaciente from "../middlewares/validacionIdPaciente.js";
 import validarToken from "../middlewares/validacionAuth.js";  
 import validarRol from "../middlewares/validarRol.js";
 
@@ -12,8 +17,19 @@ const router = Router();
 
 router.route('/test').get(prueba);
 
-router.route('/').post(crearPaciente).get(validarToken, validarRol("admin"), listarPacientes);
+router.route('/')
+    .post(validacionPaciente, crearPaciente)
+    .get(listarPacientes);
 
-router.route('/:id').get(validarToken, validarRol("admin"), obtenerPaciente).delete(validarToken, validarRol("admin"), borrarPacientePorID).put(validarToken, validarRol("paciente"),validarRol("admin"), editarPacientePorID)
+router.route('/:id')
+    .get(validarToken, validarRol("admin"), validacionIdPaciente, obtenerPaciente)
+    .delete(validarToken, validarRol("admin"), validacionIdPaciente, borrarPacientePorID)
+    .put(
+        validarToken,
+        validarRol("admin"),
+        validacionIdPaciente,
+        validacionPaciente,
+        editarPacientePorID
+    );
 
 export default router;
