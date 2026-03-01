@@ -49,9 +49,17 @@ const pacienteSchema = new mongoose.Schema(
         },
 
         role: {
-        type: String,
-        default: "paciente",
-        enum: ["paciente", "admin"]
+            type: String,
+            default: "paciente",
+            enum: ["paciente", "admin"]
+        },
+
+        resetPasswordToken: {
+            type: String,
+        },
+        
+        resetPasswordExpires: {
+            type: Date,
         }
     },
     {
