@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import Paciente from "../models/paciente.js";
-import bcrypt from "bcrypt";
+import { sendResetEmail } from "./mandarMail.js";
 
 export const forgotPassword = async (req, res) => {
   try {
@@ -9,13 +9,12 @@ export const forgotPassword = async (req, res) => {
     // Buscar usuario por email
     const user = await Paciente.findOne({ email });
 
-    // Siempre responder igual por seguridad
     if (!user) {
+      // Por seguridad, no revelamos si el email existe o no
       return res.status(200).json({
         message: "Si el email existe, se enviará un enlace de recuperación"
       });
     }
-
     // Generar token seguro
     const token = crypto.randomBytes(32).toString("hex");
 
@@ -29,9 +28,11 @@ export const forgotPassword = async (req, res) => {
     // 👀 Por ahora solo mostramos token en consola
     console.log(`Token de recuperación para ${email}: ${token}`);
 
-    // ⚡ Aquí iría la lógica de enviar email con nodemailer
-    // ej:
-    // await sendResetEmail(user.email, `http://localhost:5173/reset-password/${token}`);
+    // Generar link completo
+    const resetLink = `http://localhost:5173/reset-password/${token}`;
+
+    // Enviar correo
+    await sendResetEmail(user.email, resetLink);
 
     res.status(200).json({
       message: "Si el email existe, se enviará un enlace de recuperación"
