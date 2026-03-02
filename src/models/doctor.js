@@ -31,6 +31,13 @@ const doctorSchema = new mongoose.Schema({
         type: String,
         default: "medico",
         enum: ["medico"]
+    },
+    resetPasswordToken: {
+        type: String,
+    },
+
+    resetPasswordExpires: {
+        type: Date,
     }
 }, {
     timestamps: true
@@ -46,7 +53,7 @@ doctorSchema.pre("save", async function () {
 doctorSchema.methods.compararPassword = async function (passwordIngresada) {
     console.log(passwordIngresada);
     console.log(this.contraseña);
-    
+
     return await bcrypt.compare(passwordIngresada, this.contraseña);
 };
 

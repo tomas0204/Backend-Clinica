@@ -1,21 +1,28 @@
 import crypto from "crypto";
 import Paciente from "../models/paciente.js";
-import bcrypt from "bcrypt";
+import Doctor from "../models/doctor.js";
+import { sendResetEmail } from "./mandarMail.js";
 
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
 
     // Buscar usuario por email
-    const user = await Paciente.findOne({ email });
-
-    // Siempre responder igual por seguridad
+    let user = await Paciente.findOne({ email });
+    console.log(user);
     if (!user) {
+      user = await Doctor.findOne({ email });
+    }
+
+    console.log(user);
+
+
+    if (!user) {
+      // Por seguridad, no revelamos si el email existe o no
       return res.status(200).json({
         message: "Si el email existe, se enviará un enlace de recuperación"
       });
     }
-
     // Generar token seguro
     const token = crypto.randomBytes(32).toString("hex");
 
@@ -29,9 +36,11 @@ export const forgotPassword = async (req, res) => {
     // 👀 Por ahora solo mostramos token en consola
     console.log(`Token de recuperación para ${email}: ${token}`);
 
-    // ⚡ Aquí iría la lógica de enviar email con nodemailer
-    // ej:
-    // await sendResetEmail(user.email, `http://localhost:5173/reset-password/${token}`);
+    // // Generar link completo
+    // const resetLink = `http://localhost:5173/reset-password/${token}`;
+
+    // // Enviar correo
+    // await sendResetEmail(user.email, resetLink);
 
     res.status(200).json({
       message: "Si el email existe, se enviará un enlace de recuperación"
@@ -53,13 +62,21 @@ export const resetPassword = async (req, res) => {
       });
     }
 
-    console.log(contraseña);
-    
-
-    const user = await Paciente.findOne({
+    // Buscar usuario por token en Paciente o Doctor
+    let user = await Paciente.findOne({
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: Date.now() }
     });
+
+    if (!user) {
+      user = await Doctor.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() }
+      });
+    }
+
+    console.log(user);
+    
 
     if (!user) {
       return res.status(400).json({
@@ -67,12 +84,12 @@ export const resetPassword = async (req, res) => {
       });
     }
 
+    // Actualizar contraseña
     user.contraseña = contraseña;
 
     // Limpiar token
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
-
 
     await user.save({ validateBeforeSave: false });
 
