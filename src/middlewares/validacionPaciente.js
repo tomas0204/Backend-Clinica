@@ -7,13 +7,7 @@ const validacionPaciente = [
     .notEmpty()
     .withMessage("Nombre y Apellido son datos obligatorios")
     .isLength({ min: 5, max: 40 })
-    .withMessage("Nombre y Apellido debe tener entre 5 y 40 caracteres")
-    .custom(async (valor, { req }) => {
-      const pacienteExistente = await Paciente.findOne({ nombre_y_apellido: valor });
-      if (!pacienteExistente) return true;
-      if (req.params?.id && pacienteExistente._id.toString() === req.params.id) return true;
-      throw new Error("El nombre y Apellido ya está registrado");
-    }),
+    .withMessage("Nombre y Apellido debe tener entre 5 y 40 caracteres"),
   body("celular")
     .notEmpty()
     .withMessage("El celular es obligatorio")

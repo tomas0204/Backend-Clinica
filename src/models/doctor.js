@@ -11,7 +11,6 @@ const doctorSchema = new mongoose.Schema({
         minlength: [5, "Debe tener al menos 5 caracteres"],
         maxlength: [40, "No debe superar los 40 caracteres"],
         trim: true,
-        unique: true
     },
 
     email: {

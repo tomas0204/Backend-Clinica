@@ -1,9 +1,5 @@
 import Paciente from "../models/paciente.js"
-
-export const prueba = (req, res) => {
-    console.log("desde el controlador de prueba");
-    res.send("Prueba desde el controlador");
-};
+import { bienvenidaMail } from "./bienvenidaMail.js";
 
 export const crearPaciente = async (req, res) => {
     try {
@@ -31,12 +27,17 @@ export const crearPaciente = async (req, res) => {
         const pacienteNuevo = new Paciente(req.body);
         await pacienteNuevo.save();
 
+        await bienvenidaMail(pacienteNuevo.email, pacienteNuevo.nombre_y_apellido, "https://clinica-eight-beryl.vercel.app/login");
+        console.log("CORREO ENVIADO" + pacienteNuevo.email);
+
+
         res.status(201).json({
             mensaje: "El paciente fue creado exitosamente",
         });
 
     } catch (error) {
-        console.error(error);
+        console.log("ERROR COMPLETO:", err);
+        console.log("SERVER DATA:", err.server);
 
         if (error.name === "ValidationError") {
             return res.status(400).json({
