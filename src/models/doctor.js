@@ -24,7 +24,10 @@ const doctorSchema = new mongoose.Schema({
     contraseña: {
         type: String,
         required: [true, "La contraseña es obligatoria"],
-        minlength: [6, "Debe tener al menos 6 caracteres"]
+        match: [
+            /^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{6,12}$/,
+            "La contraseña debe tener entre 6 y 12 caracteres, una mayúscula, una minúscula, un número y un carácter especial"
+        ]
     },
 
     role: {
