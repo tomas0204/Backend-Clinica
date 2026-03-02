@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import Paciente from "../models/paciente.js";
 import Doctor from "../models/doctor.js";
-import { sendResetEmail } from "./mandarMail.js";
+import { sendResetEmail } from "./resetPasswordMail.js";
 
 export const forgotPassword = async (req, res) => {
   try {
@@ -36,11 +36,11 @@ export const forgotPassword = async (req, res) => {
     // 👀 Por ahora solo mostramos token en consola
     console.log(`Token de recuperación para ${email}: ${token}`);
 
-    // // Generar link completo
-    // const resetLink = `http://localhost:5173/reset-password/${token}`;
+    // Generar link completo
+    const resetLink = `https://clinica-eight-beryl.vercel.app/reset-password/${token}`;
 
-    // // Enviar correo
-    // await sendResetEmail(user.email, resetLink);
+    // Enviar correo
+    await sendResetEmail(user.email, resetLink);
 
     res.status(200).json({
       message: "Si el email existe, se enviará un enlace de recuperación"

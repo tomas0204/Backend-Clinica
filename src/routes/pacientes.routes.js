@@ -5,7 +5,6 @@ import {
     editarPacientePorID, 
     listarPacientes, 
     obtenerPaciente, 
-    prueba 
 } from "../controllers/pacientes.controllers.js";
 
 import validacionPaciente from "../middlewares/validacionPaciente.js";
@@ -14,8 +13,6 @@ import validarToken from "../middlewares/validacionAuth.js";
 import validarRol from "../middlewares/validarRol.js";
 
 const router = Router();
-
-router.route('/test').get(prueba);
 
 router.route('/')
     .post(validacionPaciente, crearPaciente)
