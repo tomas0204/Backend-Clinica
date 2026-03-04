@@ -72,7 +72,7 @@ const validacionTurno = [
     .isIn(["Pendiente", "Confirmado", "Cancelado", "Atendido", "Reprogramado"])
     .withMessage("Estado inválido"),
 
-  body(["fecha", "hora", "medicoNombre"]).custom(async (_, { req }) => {
+  body(["fecha"]).custom(async (_, { req }) => {
 
     const duracionMinutos = 30;
 
