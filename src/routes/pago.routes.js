@@ -3,7 +3,6 @@ import {
   crearPagoTurno,
   recibirWebhook,
 } from "../controllers/pagos.controllers.js";
-import validacionIdTurno from "../middlewares/validacionTurnoId.js";
 import validacionTurno from "../middlewares/validacionTurno.js";
 
 const router = express.Router();
