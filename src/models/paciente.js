@@ -9,7 +9,6 @@ const pacienteSchema = new mongoose.Schema(
             minlength: [5, "Debe tener al menos 5 caracteres"],
             maxlength: [40, "No debe superar los 40 caracteres"],
             trim: true,
-            unique: true
         },
 
         celular: {
@@ -49,9 +48,17 @@ const pacienteSchema = new mongoose.Schema(
         },
 
         role: {
-        type: String,
-        default: "paciente",
-        enum: ["paciente", "admin"]
+            type: String,
+            default: "paciente",
+            enum: ["paciente", "admin"]
+        },
+
+        resetPasswordToken: {
+            type: String,
+        },
+        
+        resetPasswordExpires: {
+            type: Date,
         }
     },
     {

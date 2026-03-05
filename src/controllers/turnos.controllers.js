@@ -90,9 +90,21 @@ const turnosPaginados = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
+    const { role, nombre_y_apellido } = req.user;
+
+    let filtro = {};
+
+    if (role === "medico") {
+      filtro = { medicoNombre: nombre_y_apellido };
+    }
+
+    if (role === "paciente") {
+      filtro = { pacienteNombre: nombre_y_apellido };
+    }
+
     const [turnos, cantidadTurnos] = await Promise.all([
-      Turno.find().skip(skip).limit(limit).sort({ fecha: 1 }),
-      Turno.countDocuments()
+      Turno.find(filtro).skip(skip).limit(limit).sort({ fecha: 1 }),
+      Turno.countDocuments(filtro)
     ]);
 
     res.status(200).json({
@@ -101,12 +113,12 @@ const turnosPaginados = async (req, res) => {
       cantidadTurnos,
       cantPaginas: Math.ceil(cantidadTurnos / limit),
     });
+
   } catch (error) {
     console.error(error);
-    res.status(500).json({ mensaje: "Ocurrió un error al listar los turnos paginados" });
+    res.status(500).json({ mensaje: "Error al listar turnos" });
   }
 };
-
 export {
   crearTurno,
   obtenerTurnos,

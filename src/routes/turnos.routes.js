@@ -12,7 +12,7 @@ const router = Router()
 
 router.route("/").post(validacionTurno, crearTurno).get(obtenerTurnos)
 
-router.route('/paginacion').get(turnosPaginados)
+router.route('/paginacion').get(validarToken, turnosPaginados)
 
 
 router.route('/:id')
