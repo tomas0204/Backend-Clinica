@@ -1,11 +1,11 @@
-import router from "./src/routes/index.routes.js"
-import Server from "./src/server/config.js"
-import router from "./src/routes/doctores.routes.js";
+import mainRouter from "./src/routes/index.routes.js";
+import doctoresRouter from "./src/routes/doctores.routes.js";
+import Server from "./src/server/config.js";
 
 const server = new Server();
-//escuche al puerto 
-server.app.use("/api", router)
 
-server.app.use("/api/doctores", router);
+// rutas
+server.app.use("/api", mainRouter);
+server.app.use("/api/doctores", doctoresRouter);
 
 server.listen();

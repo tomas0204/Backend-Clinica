@@ -27,7 +27,7 @@ const doctorSchema = new mongoose.Schema({
         lowercase: true
     },
 
-    contraseña: {
+    contrasena: {
         type: String,
         required: [true, "La contraseña es obligatoria"],
         minlength: [6, "Debe tener al menos 6 caracteres"]
@@ -43,10 +43,10 @@ const doctorSchema = new mongoose.Schema({
 });
 
 doctorSchema.pre("save", async function () {
-    if (!this.isModified("contraseña")) return;
+    if (!this.isModified("contrasena")) return;
 
     const salt = await bcrypt.genSalt(10);
-    this.contraseña = await bcrypt.hash(this.contraseña, salt);
+    this.contrasena = await bcrypt.hash(this.contrasena, salt);
 });
 
 
