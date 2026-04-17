@@ -5,11 +5,13 @@ const doctorSchema = new mongoose.Schema({
     nombre_medico: {
         type: String,
         required: [true, "El nombre es obligatorio"],
+        minlength: [3, "El nombre debe tener al menos 3 caracteres"], // Nueva validación
         maxlength: [15, "Máximo 15 caracteres"]
     },
     apellido_medico: {
         type: String,
         required: [true, "El apellido es obligatorio"],
+        minlength: [3, "El apellido debe tener al menos 3 caracteres"], // Nueva validación
         maxlength: [15, "Máximo 15 caracteres"]
     },
     especialidad: {
@@ -20,18 +22,19 @@ const doctorSchema = new mongoose.Schema({
         type: String,
         required: [true, "El email es obligatorio"],
         unique: true,
+        lowercase: true,
+        trim: true,     
         maxlength: [40, "Máximo 40 caracteres"]
     },
     contrasena: {
         type: String,
-        required: [true, "La contraseña es obligatoria"]
+        required: [true, "La contraseña es obligatoria"],
+       
     },
     role: { type: String, default: "medico" }
 }, { timestamps: true });
 
-// --- MIDDLEWARES DE BCRYPT CORREGIDOS ---
 
-// Hash al crear: Se quita el parámetro 'next' porque es una función async
 doctorSchema.pre("save", async function () {
     if (!this.isModified("contrasena")) return;
 
@@ -43,11 +46,10 @@ doctorSchema.pre("save", async function () {
     }
 });
 
-// Hash al editar: Se quita el parámetro 'next'
+
 doctorSchema.pre("findOneAndUpdate", async function () {
     const update = this.getUpdate();
-    
-    // Si hay una contraseña nueva y no es un texto vacío
+
     if (update.contrasena && update.contrasena.trim() !== "") {
         try {
             const salt = await bcrypt.genSalt(10);
@@ -56,8 +58,6 @@ doctorSchema.pre("findOneAndUpdate", async function () {
             throw new Error("Error al encriptar la nueva contraseña");
         }
     } else {
-        // Importante: Eliminar el campo del update si viene vacío 
-        // para que no sobreescriba la contraseña actual con nada
         delete update.contrasena;
     }
 });
