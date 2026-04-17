@@ -5,13 +5,13 @@ const doctorSchema = new mongoose.Schema({
     nombre_medico: {
         type: String,
         required: [true, "El nombre es obligatorio"],
-        minlength: [3, "El nombre debe tener al menos 3 caracteres"], // Nueva validación
+        minlength: [3, "El nombre debe tener al menos 3 caracteres"], 
         maxlength: [15, "Máximo 15 caracteres"]
     },
     apellido_medico: {
         type: String,
         required: [true, "El apellido es obligatorio"],
-        minlength: [3, "El apellido debe tener al menos 3 caracteres"], // Nueva validación
+        minlength: [3, "El apellido debe tener al menos 3 caracteres"], 
         maxlength: [15, "Máximo 15 caracteres"]
     },
     especialidad: {
