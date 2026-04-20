@@ -1,5 +1,5 @@
 import Doctor from "../models/doctor.js";
-import { enviarEmailBienvenida } from "../helpers/enviarEmail.js";
+import { enviarEmailBienvenidaMedico } from "../services/emailService.js";
 
 export const crearDoctor = async (req, res) => {
     try {
@@ -15,14 +15,19 @@ export const crearDoctor = async (req, res) => {
         });
 
         await doctorNuevo.save();
-        enviarEmailBienvenida(doctorNuevo.email_medico, doctorNuevo.nombre_medico);
+        await enviarEmailBienvenidaMedico({
+            nombre: nombre_medico,
+            apellido: apellido_medico,
+            email: email_medico,
+            especialidad,
+            contrasena,
+        });
 
         res.status(201).json({ mensaje: "El doctor fue creado exitosamente" });
 
     } catch (error) {
         console.error("LOG DE ERROR EN BACKEND:", error);
 
-       
         if (error.code === 11000) {
             return res.status(400).json({ 
                 mensaje: "Este email ya está registrado en nuestra base de datos." 
@@ -30,12 +35,10 @@ export const crearDoctor = async (req, res) => {
         }
 
         if (error.name === "ValidationError") {
-           
             const mensajeValidacion = Object.values(error.errors)[0].message;
             return res.status(400).json({ mensaje: mensajeValidacion });
         }
 
-       
         res.status(500).json({ mensaje: "Ocurrió un error interno al crear el doctor." });
     }
 };
